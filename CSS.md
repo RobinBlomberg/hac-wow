@@ -5,6 +5,7 @@
 Vi namnger våra CSS-klasser enligt **PascalCase**-formatet:
 
 **`NavigationBar`**
+
 **`Footer__CopyrightText`**
 
 Även om det allmänt vedertagna formatet för CSS-klasser är **kebab-case** (t.ex. "footer__copyright-text") så är min (Robins) erfarenhet att PascalCase är mer lättläst, och ser trevligare ut (smaksak).
@@ -18,9 +19,13 @@ För att skriva logisk, strukturerad och lätthanterad CSS finns en metodologi s
 - **`--Modifier`**: En klass som kan läggas till ett block eller element för att förändra dess utseende eller funktion.
 
 Exempel på giltiga klassnamn enligt BEM-modellen:
+
 **`LoginForm`**
+
 **`ProfilePicture__StatusIcon`**
+
 **`Button--Red`**
+
 **`NavBar__MenuItems--Expanded`**
 
 Du kan läsa mer om metodologin här:
@@ -191,7 +196,7 @@ body { margin: 0; }
 .Button { background-color: yellow; }
 ```
 
-Detta är de viktigaste funktionerna i SASS, men det finns många fler, exempelvis funktioner. Läs mer på https://sass-lang.com/documentation.
+Detta är de vanligaste funktionerna i SASS, men det finns många fler. Läs mer på https://sass-lang.com/documentation.
 
 ## Stylelint
 
