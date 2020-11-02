@@ -4,3 +4,5 @@
 
 - [HTML](./HTML.md)
 - [CSS](./CSS.md)
+- [Kodpriciper](./Kodprinciper.md)
+- [JSDoc](./JSDoc.md)
