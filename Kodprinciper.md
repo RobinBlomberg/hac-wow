@@ -232,7 +232,7 @@ while (hasMore) {
 
 ### ✔️ Använd JSDoc-kommentarer för att beskriva och annotera funktioner
 
-Det ursprungliga syftet med JSDoc är att kunna generera dokumentation utifrån kommentarsblock i koden, men det finns fler fördelar än så. Dels blir JSDoc-kommentarer snyggt formaterade och färglagda i editorn, men dels kan hålla musen över en kodreferens var som helst i koden och snabbt ta till sig av dess dokumentation på ett smidigt sätt.
+Det ursprungliga syftet med JSDoc är att kunna generera dokumentation utifrån kommentarsblock i koden, men det finns fler fördelar än så. Dels blir JSDoc-kommentarer snyggt formaterade och färglagda i editorn, men dels kan man hålla musen över en kodreferens var som helst i koden och snabbt ta till sig av dess dokumentation på ett smidigt sätt.
 
 Läs mer i **[JSDoc-guiden](./JSDoc.md)**.
 
@@ -301,7 +301,7 @@ export const setMarker = (lngLat) => {
 // map.js
 const STYLE_URL = 'mapbox://styles/mapbox/streets-v11';
 
-✔️ class Map {
+✔️ export class Map {
   constructor() {
     this.map = new mapboxgl.Map({
       container: 'map',
