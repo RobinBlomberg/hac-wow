@@ -12,9 +12,7 @@ En inline-tagg som används för att infoga en länk i en JSDoc-text.
 
 ```javascript
 /**
- * See {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
- * Also, check out {@link http://www.google.com|Google} and
- * {@link https://github.com GitHub}.
+ * Check out {@link http://www.google.com|Google} and {@link https://github.com GitHub}.
  */
 function myFunction() {}
 ```
@@ -34,9 +32,9 @@ function add(a: number, b: number) {
 }
 ```
 
-Det går också att med fördel skippa taggen helt (om du inte använder en dokumentationsgenerator som verkar kräva det, exempelvis [TypeDoc](https://typedoc.org/).
-
 ![@description](./assets/JSDoc_Description.png)
+
+Det går också att med fördel skippa taggen helt (om du inte använder en dokumentationsgenerator som verkar kräva det, exempelvis [TypeDoc](https://typedoc.org/).
 
 ```javascript
 /**
@@ -47,9 +45,11 @@ function add(a: number, b: number) {
 }
 ```
 
+![@description](./assets/JSDoc_Description2.png)
+
 ## [@deprecated](https://jsdoc.app/tags-deprecated.html)
 
-Markerar ett objekt som "deprecated" (utdaterad), som en varning om att det inte bör användas längre.
+Denna tagg markerar ett objekt som "deprecated" (utdaterad), som en varning om att det inte bör användas längre.
 
 I VS Code syns detta visuellt genom en vit överstruken linje överallt där objektet används.
 
@@ -93,12 +93,10 @@ Anger en länk till en URL där man kan läsa mer.
 Detta är väldigt användbart om man t.ex. jobbar mot en dokumentation, eller om man följer implementationsdetaljer eller guidelines som anges någon annanstans.
 
 ```javascript
-// Use the inline {@link} tag to include a link within a free-form description.
 /**
- * @see {@link foo} for further information.
- * @see {@link http://github.com|GitHub}
+ * @see {@link http://example.com|The Example documentation}
  */
-function bar() {}
+function doThing() {}
 ```
 
 ![@see](./assets/JSDoc_See.png)
