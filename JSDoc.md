@@ -1,6 +1,29 @@
 # JSDoc
 
+JSDoc är ursprungligen ett system för att generera dokumentationer utifrån kodkommentarer. Det är fortfarande användbart i det syftet, men har också blivit en standard för att ange extra beskrivande information till JavaScript-objekt, och som editorverktyg för att snabbt kunna få upp information om olika objekt.
+
+[JSDoc 3](https://jsdoc.app/index.html) har ungefär 65 officiella taggar, men det är värt att nämna att de flesta av taggarna är till för att specificera funktionalitet som saknas i äldre versioner av JavaScript, eller typinformation om man inte använder TypeScript. Eftersom vi rekommenderar att använda modern TypeScript kommer vi att skippa överflödiga taggar så som `@class`, `@enum`, `@private`, `@readonly`, `@typedef` och dylikt som redan finns i språket. I det här dokumentet kommer vi att nämna de JSDoc-taggar som är mest användbara.
+
+Med det sagt är det ingen dum idé att [se vilka JSDoc-taggar som finns](https://jsdoc.app/index.html).
+
+## [{@link}](https://jsdoc.app/tags-inline-link.html)
+
+En inline-tagg som används för att infoga en länk i en JSDoc-text.
+
+```javascript
+/**
+ * See {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
+ * Also, check out {@link http://www.google.com|Google} and
+ * {@link https://github.com GitHub}.
+ */
+function myFunction() {}
+```
+
+![@link](./assets/JSDoc_Link.png)
+
 ## [@description](https://jsdoc.app/tags-description.html)
+
+Beskriver ett objekt. Om det inte är helt självklart vad en funktion gör eller hur och när den ska användas, eller om det finns implementationsdetaljer som är viktiga att nämna, gör det gärna i denna beskrivning.
 
 ```javascript
 /**
@@ -11,9 +34,24 @@ function add(a: number, b: number) {
 }
 ```
 
+Det går också att med fördel skippa taggen helt (om du inte använder en dokumentationsgenerator som verkar kräva det, exempelvis [TypeDoc](https://typedoc.org/).
+
 ![@description](./assets/JSDoc_Description.png)
 
+```javascript
+/**
+ * Add two numbers.
+ */
+function add(a: number, b: number) {
+  return a + b;
+}
+```
+
 ## [@deprecated](https://jsdoc.app/tags-deprecated.html)
+
+Markerar ett objekt som "deprecated" (utdaterad), som en varning om att det inte bör användas längre.
+
+I VS Code syns detta visuellt genom en vit överstruken linje överallt där objektet används.
 
 ```javascript
 /**
@@ -26,6 +64,10 @@ function someOldFunction() {
 ![@deprecated](./assets/JSDoc_Deprecated.png)
 
 ## [@example](https://jsdoc.app/tags-example.html)
+
+En av de mest tacksamma funktionaliteterna när det kommer till att använda JSDoc som ett kommentarsverktyg.
+
+I `@example`-taggen kan man ange en kodsnutt av JavaScript/TypeScript som illustrerar hur en funktion ska användas. Om man hovrar musen över en funktionsreferens i VS Code så visas exempelkoden som formaterad, highlightad kod.
 
 ```javascript
 /**
@@ -46,6 +88,10 @@ const divide = function (a, b) {
 
 ## [@see](https://jsdoc.app/tags-see.html)
 
+Anger en länk till en URL där man kan läsa mer.
+
+Detta är väldigt användbart om man t.ex. jobbar mot en dokumentation, eller om man följer implementationsdetaljer eller guidelines som anges någon annanstans.
+
 ```javascript
 // Use the inline {@link} tag to include a link within a free-form description.
 /**
@@ -59,6 +105,10 @@ function bar() {}
 
 ## [@since](https://jsdoc.app/tags-since.html)
 
+Anger i vilken app-version man införde ett specifikt objekt.
+
+Detta är speciellt användbart om man skapar ett externt API, men kan också vara trevlig information internt i ett versionshanterat projekt.
+
 ```javascript
 /**
  * Provides access to user information.
@@ -70,6 +120,8 @@ function UserRecord() {}
 ![@since](./assets/JSDoc_Since.png)
 
 ## [@summary](https://jsdoc.app/tags-summary.html)
+
+Anges för att skriva en sammanfattad version av en längre beskrivning.
 
 ```javascript
 /**
@@ -85,9 +137,11 @@ function bloviate() {}
 
 ## [@throws](https://jsdoc.app/tags-throws.html)
 
+Eftersom TypeScript ännu inte har något sätt att annotera vilka exceptions en funktion kan kasta så kan `@throws`-taggen vara till nytta.
+
 ```javascript
 /**
- * @throws {DivideByZero} Argument x must be non-zero.
+ * @throws {TypeError} Argument x must be non-zero.
  */
 function baz(x) {}
 ```
@@ -95,6 +149,10 @@ function baz(x) {}
 ![@throws](./assets/JSDoc_Throws.png)
 
 ## [@todo](https://jsdoc.app/tags-todo.html)
+
+Används för att annotera uppgifter som inte ännu är gjorda.
+
+En stark rekommendation, om du använder VS Code, är att installera extensionen [Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree), och att ställa in den att använda strängen `@todo` som markör. På så sätt kommer varje JSDoc-`@todo` i projektet att samlas i ett och samma fönster, och kommer också att markeras med en tydlig färg i koden.
 
 ```javascript
 /**
@@ -106,9 +164,11 @@ function foo() {
 }
 ```
 
-![@todo](./assets/JSDoc_Todo.png)
+![@todo](./assets/JSDoc_Todo2.png)
 
 ## [@version](https://jsdoc.app/tags-version.html)
+
+Anger vilket versionsnummer ett objekt har. Behöver nog sällan användas, men kan vara användbart om man exempelvis vill annotera ett API.
 
 ```javascript
 /**
@@ -123,16 +183,3 @@ function solver(a, b) {
 ```
 
 ![@version](./assets/JSDoc_Version.png)
-
-## [{@link}](https://jsdoc.app/tags-inline-link.html)
-
-```javascript
-/**
- * See {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
- * Also, check out {@link http://www.google.com|Google} and
- * {@link https://github.com GitHub}.
- */
-function myFunction() {}
-```
-
-![@link](./assets/JSDoc_Link.png)
