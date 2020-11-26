@@ -201,7 +201,8 @@ Lägg till detta i filen `tsconfig.json` (i projektets huvudmapp):
 {
   "compilerOptions": {
     "allowJs": true,
-    "checkJs": true
+    "checkJs": true,
+    "noEmit": true
   }
 }
 ```
