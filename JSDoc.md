@@ -201,8 +201,7 @@ Lägg till detta i filen `tsconfig.json` (i projektets huvudmapp):
 {
   "compilerOptions": {
     "allowJs": true,
-    "checkJs": true,
-    "noEmit": true
+    "checkJs": true
   }
 }
 ```
@@ -221,7 +220,7 @@ const myNumber = 'Hello world!';
 För att typ-checka din JavaScript från en terminal eller ett skript, åberopa TypeScript Compiler (`npx` behövs inte om det är ett package.json-skript):
 
 ```
-npx tsc
+npx tsc --noEmit
 ```
 
 ## Exempelanvändning
