@@ -1,8 +1,8 @@
-# JSDoc
+# JSDoc i TypeScript
 
 JSDoc är ursprungligen ett system för att generera dokumentationer utifrån kodkommentarer. Det är fortfarande användbart i det syftet, men har också blivit en standard för att ange extra beskrivande information till JavaScript-objekt, och som editorverktyg för att snabbt kunna få upp information om olika objekt.
 
-[JSDoc 3](https://jsdoc.app/index.html) har ungefär 65 officiella taggar, men det är värt att nämna att de flesta av taggarna är till för att specificera funktionalitet som saknas i äldre versioner av JavaScript, eller typinformation om man inte använder TypeScript. Eftersom vi rekommenderar att använda modern TypeScript kommer vi att skippa överflödiga taggar så som `@class`, `@enum`, `@private`, `@readonly`, `@typedef` och dylikt som redan finns i språket. I det här dokumentet kommer vi att nämna de JSDoc-taggar som är mest användbara.
+[JSDoc 3](https://jsdoc.app/index.html) har ungefär 65 officiella taggar, men det är värt att nämna att de flesta av taggarna är till för att specificera funktionalitet som saknas i äldre versioner av JavaScript, eller typinformation om man inte använder TypeScript. Eftersom vi rekommenderar att använda modern TypeScript (eller typad JavaScript - se [nedan](#jsdoc-i-javascript)) kommer vi att skippa överflödiga taggar så som `@class`, `@enum`, `@private`, `@readonly`, `@typedef` och dylikt som redan finns i språket. I den här sektionen kommer vi att nämna de JSDoc-taggar som är mest användbara i TypeScript.
 
 Med det sagt är det ingen dum idé att [se vilka JSDoc-taggar som finns](https://jsdoc.app/index.html).
 
@@ -170,8 +170,7 @@ Anger vilket versionsnummer ett objekt har. Behöver nog sällan användas, men 
 
 ```javascript
 /**
- * Solves equations of the form a * x = b. Returns the value
- * of x.
+ * Solves equations of the form a * x = b. Returns the value of x.
  * @version 1.2.3
  * @tutorial solver
  */
@@ -181,3 +180,225 @@ function solver(a, b) {
 ```
 
 ![@version](./assets/JSDoc_Version.png)
+
+# JSDoc i JavaScript
+
+En stor fördel med JSDoc är att det faktiskt kan användas tillsammans med TypeScript för att type-checka helt vanliga JavaScript-filer - helt utan kompilering.
+
+## Installation
+
+Öppna Visual Studio Code.
+
+Installera senaste TypeScript-versionen:
+
+```
+npm install --save-dev typescript@latest
+```
+
+Lägg till detta i filen `tsconfig.json` (i projektets huvudmapp):
+
+```json
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
+  }
+}
+```
+
+Det borde redan nu fungera med type-checking av JavaScript-filer. Testa annars att sätta VS Code-inställningen `"javascript.implicitProjectConfig.checkJs"` till `true`.
+
+Som test kan spara denna kod som JavaScript och se om VS Code klagar på den felaktiga typningen nedan:
+
+```javascript
+/**
+ * @type {number}
+ */
+const myNumber = 'Hello world!';
+```
+
+För att typ-checka din JavaScript från en terminal eller ett skript, åberopa TypeScript Compiler (`npx` behövs inte om det är ett package.json-skript):
+
+```
+npx tsc
+```
+
+## Exempelanvändning
+
+Nedan illustreras ett par exempel på hur JSDoc kan användas för dokumentation och typning. Det är inte nödvändigtvis de vackraste exemplen, men de visar exempel på ett par vanliga användningsområden.
+
+### Skapa typdefinitioner och använda dem
+
+```javascript
+/**
+ * @typedef {'admin' | 'editor' | 'reader'} UserRole
+ */
+
+/**
+ * @typedef {Object} User
+ * @property {number} age
+ * @property {string} name
+ * @property {UserRole} role
+ * @property {User[]} connections
+ */
+
+/**
+ * @type {User}
+ */
+const user = {
+  age: 46,
+  name: 'Frank',
+  role: 'editor',
+  connections: [
+    {
+      age: '41', // ⚠️ Type 'string' is not assignable to type 'number'. ts(2322)
+      name: 'Amy',
+      role: 'reader',
+      connections: []
+    }
+  ]
+};
+```
+
+### Importera typdefinitioner från andra filer/moduler
+
+```javascript
+/**
+ * @typedef {import('./types.ts').User} User
+ * @typedef {import('./server.js').ServerResponse} ServerResponse
+ * @typedef {import('qs').IParseOptions} QueryStringParseOptions
+ */
+ 
+/** @type {User} */
+const user = { name: 'Frank' };
+
+/** @param {ServerResponse} res */
+const requestHandler = (req, res) => {};
+
+/** @type {QueryStringParseOptions} */
+const qsOptions = { charset: 'utf-8' };
+```
+
+### Typa en funktion
+
+```javascript
+/**
+ * Returns the base to the exponent power, that is, base^exponent.
+ *
+ * @param {number} base The base number.
+ * @param {number} exponent The exponent used to raise the base.
+ * @returns {number} A number representing the given base taken to the power of the given exponent.
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/pow
+ */
+const power = (base, exponent) => {
+  return Math.pow(base, exponent);
+};
+```
+
+### Typa en funktion med valfria parametrar
+
+```javascript
+/**
+ * Creates a virtual HTML element node.
+ *
+ * @author Peter Parker
+ * @module VirtualHTML
+ * @since 0.2.0
+ *
+ * @typedef {Object.<string, number | string>} Attributes
+ * @typedef {{ tagName: string; attributes: Attributes; childNodes: VChildNode[]; }} VElement
+ * @typedef {{ data: string; }} VText
+ * @typedef {VElement | VText} VChildNode
+ *
+ * @param {string} tagName
+ * @param {Attributes} [attributes]
+ * @param {VChildNode[]} [childNodes=[]]
+ * @returns {VElement}
+ */
+const createVElement = (tagName, attributes, childNodes = []) => {
+  return { tagName, attributes, childNodes };
+};
+```
+
+### Typa en klass
+
+```javascript
+/**
+ * A simple object for value storage/retrieval.
+ * @typedef {Object.<string, *>} Store
+ * @typedef {(value: *) => *} CustomGetter
+ */
+export class KeyValueStore {
+  /**
+   * The internal store object, which allows string-type keys and values of any type.
+   * @type {Store}
+   */
+  #store = {};
+  
+  /**
+   * An optional function that transforms the value before retrieval.
+   * @type {CustomGetter}
+   */
+  customGetter;
+  
+  /**
+   * @param {CustomGetter} customGetter
+   */
+  constructor(customGetter) {
+    this.customGetter = customGetter;
+  }
+  
+  /**
+   * @param {string} key
+   */
+  get(key) {
+    const value = this.#store[key];
+    return this.customGetter
+      ? this.customGetter(value)
+      : value;
+  }
+  
+  /**
+   * @param {(key: string, value: *) => *} iteratee
+   */
+  forEach(iteratee) {
+    for (const key in this.#store) {
+      iteratee(key, this.#store[key]);
+    }
+  }
+  
+  /**
+   * @param {string} key
+   * @param {*} value
+   */
+  set(key, value) {
+    this.#store[key] = value;
+  }
+}
+```
+
+### Casta ett värde från en typ till en subtyp
+
+Genom att använda `/** @type ... */` med parenteser kring ett värde kan man casta värdet till en smalare typ.
+
+**OBS:** Värdet *måste* ha parenteser `()` runt sig.
+
+```javascript
+/**
+ * Creates a new blog post.
+ * @typedef {{ content: string; timestamp: number; title: string; }} BlogPost
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {string} req.params.postId The ID of the blog post.
+ */
+app.post('/Blog/:postId', async(req, res) => {
+  try {
+    /** @type {BlogPost} */
+    const post = (req.body);
+    BlogPosts.create(req.params.postId, post);
+  } catch (ex) {
+    res.status(500);
+  }
+  res.end();
+});
+```
